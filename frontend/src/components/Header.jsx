@@ -1,5 +1,5 @@
 import { Badge, Navbar, Nav, Container } from 'react-bootstrap'
-import { UseSelector, useSelector } from 'react-redux/es/hooks/useSelector'
+import { useSelector } from 'react-redux/es/hooks/useSelector'
 import { FaShoppingCart, FaUser } from 'react-icons/fa'
 import { LinkContainer } from 'react-router-bootstrap'
 import logo from '../assets/logo.png'
