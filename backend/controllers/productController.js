@@ -1,11 +1,17 @@
 import asyncHandler from '../middleware/asyncHandler.js'
 import Product from '../models/productModel.js'
 
+// @desc  Fetch all products
+// @route Get api/products
+// @access public
 const getProducts = asyncHandler(async (req, res) => {
   const products = await Product.find({})
   res.send(products)
 })
 
+// @desc  Fetch product by id
+// @route Get api/products/:id
+// @access public
 const getProductsById = asyncHandler(async (req, res) => {
   const product = await Product.findById(req.params.id)
   if (product) {
