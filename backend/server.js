@@ -1,6 +1,7 @@
 import express from 'express'
 import dotenv from 'dotenv'
 dotenv.config()
+import cookieParser from 'cookie-parser'
 import connectDB from './config/db.js'
 import productRoutes from './routes/productRoutes.js'
 import userRoutes from './routes/userRoutes.js'
@@ -15,6 +16,8 @@ const app = express()
 //Body parser middleware
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+
+app.use(cookieParser())
 
 app.get('/', (req, res) => {
   res.send('api is running....')
