@@ -1,15 +1,45 @@
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux'
 import { Form, Button, Row, Col, FormGroup } from 'react-bootstrap'
 import FormContainer from '../components/FormContainer'
+import { setCredentials } from '../slices/authSlice'
+import { useLoginMutation } from '../slices/usersApiSlice'
+import Loader from '../components/Loader'
+import { toast } from 'react-toastify'
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  const submitHandler = (e) => {
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  const [login, { isLoading }] = useLoginMutation()
+
+  const { userInfo } = useSelector((state) => state.auth)
+
+  // extracting redirect from URL query params
+  const { search } = useLocation()
+  const sp = new URLSearchParams(search)
+  const redirect = sp.get('redirect') || '/'
+
+  // if user logged in navigate to redirect
+  useEffect(() => {
+    if (userInfo) {
+      navigate(redirect)
+    }
+  }, [userInfo, redirect, navigate])
+
+  const submitHandler = async (e) => {
     e.preventDefault()
-    console.log('Submit clicked')
+    try {
+      const res = await login({ email, password }).unwrap()
+      dispatch(setCredentials({ ...res }))
+      navigate(redirect)
+    } catch (err) {
+      toast.error(err?.data?.message || err.error)
+    }
   }
 
   return (
@@ -35,13 +65,22 @@ const LoginScreen = () => {
           ></Form.Control>
         </FormGroup>
 
-        <Button type='submit' variant='primary' className='mt-2'>
+        <Button
+          type='submit'
+          variant='primary'
+          className='mt-2'
+          disabled={isLoading}
+        >
           Sign In
         </Button>
+        {isLoading && <Loader />}
       </Form>
       <Row className='py-3'>
         <Col>
-          New Customer? <Link to='/register'>Register Now</Link>
+          New Customer?{' '}
+          <Link to={redirect ? `/register?redirect=${redirect}` : '/register'}>
+            Register Now
+          </Link>
         </Col>
       </Row>
     </FormContainer>
