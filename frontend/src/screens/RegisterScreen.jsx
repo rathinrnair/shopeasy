@@ -2,7 +2,7 @@ import FormContainer from '../components/FormContainer'
 import { Form, Button, Row, Col } from 'react-bootstrap'
 import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate, Link } from 'react-router-dom'
 import Message from '../components/Message'
 import { useRegisterMutation } from '../slices/usersApiSlice'
 import { setCredentials } from '../slices/authSlice'
@@ -122,6 +122,14 @@ const RegisterScreen = () => {
         </Button>
         {isLoading && <Loader />}
       </form>
+      <Row className='py-3'>
+        <Col>
+          Already have an account?{' '}
+          <Link to={redirect ? `/login?redirect=${redirect}` : '/login'}>
+            Login
+          </Link>
+        </Col>
+      </Row>
       <Row className='mt-3'>
         {!passwordsMatch && (
           <Message variant='danger'>Passwords do not match.</Message>
