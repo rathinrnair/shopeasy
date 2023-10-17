@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { Button, Form, FormGroup, FormLabel } from 'react-bootstrap'
 import FormContainer from '../components/FormContainer'
 import { saveShippingAddress } from '../slices/cartSlice'
+import CheckoutSteps from '../components/CheckoutSteps'
 
 const ShippingScreen = () => {
   const navigate = useNavigate()
@@ -26,6 +27,7 @@ const ShippingScreen = () => {
   }
   return (
     <FormContainer>
+      <CheckoutSteps step1 step2 />
       <h1>Shipping Address</h1>
       <Form onSubmit={submitHandler}>
         <FormGroup controlId='address' className='my-2'>
