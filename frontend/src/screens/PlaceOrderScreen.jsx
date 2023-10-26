@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { useNavigate, Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Row, Col, Button, ListGroup, Card, Image } from 'react-bootstrap'
 import CheckoutSteps from '../components/CheckoutSteps'
