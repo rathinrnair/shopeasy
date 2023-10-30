@@ -1,8 +1,8 @@
 import { useParams, Link } from 'react-router-dom'
 import { useEffect } from 'react'
-import { useSelector } from 'react-redux'
+// import { useSelector } from 'react-redux'
 import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js'
-import { Row, Col, ListGroup, Button, Image, Card } from 'react-bootstrap'
+import { Row, Col, ListGroup, Image, Card } from 'react-bootstrap'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import {
@@ -31,7 +31,7 @@ const OrderScreen = () => {
     error: errorPayPal,
   } = useGetPayPalClientIdQuery()
 
-  const { userInfo } = useSelector((state) => state.auth)
+  // const { userInfo } = useSelector((state) => state.auth)
 
   useEffect(() => {
     if (!errorPayPal && !loadingPayPal && payPal.clientId) {
@@ -64,11 +64,11 @@ const OrderScreen = () => {
       }
     })
   }
-  async function onApproveTest() {
-    await payOrder({ orderId, details: { payer: {} } })
-    refetch()
-    toast.success('Payment Sucessful')
-  }
+  // async function onApproveTest() {
+  //   await payOrder({ orderId, details: { payer: {} } })
+  //   refetch()
+  //   toast.success('Payment Sucessful')
+  // }
   function onError(err) {
     toast.error(err.Message)
   }
@@ -181,17 +181,17 @@ const OrderScreen = () => {
               {!order.isPaid && (
                 <ListGroup.Item>
                   {loadingPay && <Loader />}
-                  {isLoading ? (
+                  {isPending ? (
                     <Loader />
                   ) : (
                     <div>
-                      <Button
+                      {/* <Button
                         onClick={onApproveTest}
                         style={{ marginBottom: '10px' }}
                       >
                         {' '}
                         Test Pay Order
-                      </Button>
+                      </Button> */}
                       <div>
                         <PayPalButtons
                           createOrder={createOrder}
