@@ -120,30 +120,30 @@ const ProfileScreen = () => {
             <tbody>
               {orders.map((order) => (
                 <tr key={order._id}>
-                  <th>{order._id}</th>
-                  <th>{order.createdAt.substring(0, 10)}</th>
-                  <th>{order.totalPrice}</th>
-                  <th>
+                  <td>{order._id}</td>
+                  <td>{order.createdAt.substring(0, 10)}</td>
+                  <td>{order.totalPrice}</td>
+                  <td>
                     {order.isPaid ? (
                       order.paidAt.substring(0, 10)
                     ) : (
                       <FaTimes style={{ color: 'red' }} />
                     )}
-                  </th>
-                  <th>
+                  </td>
+                  <td>
                     {order.isDelivered ? (
                       order.deliveredAt.substring(0, 10)
                     ) : (
                       <FaTimes style={{ color: 'red' }} />
                     )}
-                  </th>
-                  <th>
+                  </td>
+                  <td>
                     <LinkContainer to={`/order/${order._id}`}>
                       <Button className='btn-sm' variant='light'>
                         Details
                       </Button>
                     </LinkContainer>
-                  </th>
+                  </td>
                 </tr>
               ))}
             </tbody>

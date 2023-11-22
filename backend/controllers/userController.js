@@ -105,28 +105,78 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 // @route GET api/users
 // @access private/Admin
 const getUsers = asyncHandler(async (req, res) => {
-  res.send('get users - admin')
+  try {
+    const users = await User.find({}).select('-password')
+    if (users) {
+      res.status(200).json(users)
+    } else {
+      res.status(404).json({ message: 'No Users Found' })
+    }
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ error: 'Failed to fetch users' })
+  }
 })
 
 // @desc  Get user by id
 // @route GET api/users/:id
 // @access private/Admin
 const getUserById = asyncHandler(async (req, res) => {
-  res.send('get user by id - admin')
+  try {
+    const user = await User.findById(req.params.id).select('-password')
+    if (user) {
+      res.status(200).json(user)
+    } else {
+      res.status(404).json({ message: 'User not found' })
+    }
+  } catch (error) {
+    console.error(error)
+
+    res.status(400).json({ error: 'Failed to fetch users' })
+  }
 })
 
 // @desc  Delete user
 // @route DELETE api/users/:id
 // @access private/Admin
 const deleteUser = asyncHandler(async (req, res) => {
-  res.send('delete user - admin')
+  try {
+    const user = await User.findById(req.params.id)
+    if (user) {
+      if (user.isAdmin) {
+        res.status(400)
+        throw new Error('cannot delete admin User')
+      }
+      await User.deleteOne({ _id: user._id })
+      res.status(200).json({ message: 'User Deleted Sucessfully' })
+    } else {
+      res.status(404).json({ message: 'User Not Found' })
+    }
+  } catch (error) {
+    console.log(error)
+    res.status(400).json({ error: 'Failed to delete users' })
+  }
 })
 
 // @desc  Update user by id
 // @route PUT api/users/:id
-// @access private
+// @access private/admin
 const updateUser = asyncHandler(async (req, res) => {
-  res.send('update user by id')
+  try {
+    const user = await User.findById(req.params.id)
+    if (user) {
+      user.name = req.body.name || user.name
+      user.email = req.body.email || user.email
+      user.isAdmin = Boolean(req.body.isAdmin)
+      await user.save()
+      res.status(200).json({ message: 'User Data Updated.' })
+    } else {
+      res.status(2404).json({ message: 'User Not Found.' })
+    }
+  } catch (error) {
+    console.log(error)
+    res.status(400).json({ error: 'Failed to Update User Data' })
+  }
 })
 
 export {
